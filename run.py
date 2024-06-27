@@ -174,6 +174,7 @@ def init_model(model, tokenizer):
 
     llm = CustomLLM()
     return llm
+
 llm_for_response=init_model(model,tokenizer)     #LLM personnalisé pour générer la reponse des candidats
 
 
@@ -210,6 +211,7 @@ def init_model_gnose(model, tokenizer):
 
     llm = CustomLLM()
     return llm
+
 llm_for_gnose=init_model_gnose(model,tokenizer)     #LLM personnalisé pour générer la reponse de GnoseIA
 
 
@@ -239,6 +241,7 @@ def init_model_for_overview(model, tokenizer):
 
     llm = CustomLLM()
     return llm
+
 llm_for_overview = init_model_for_overview(model, tokenizer)   #LLM personnalisé pour l'aperçu général du document
 
 
@@ -249,6 +252,7 @@ def combined_chunk(document:list)-> str:
     else:
         doc = " ".join(chunk.page_content for chunk in document)
     return doc
+
 # Créer un modèle LangChain pour générer un aperçu général
 def create_overview():
     prompt_template = """
@@ -268,9 +272,11 @@ def create_overview():
     prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
     overview_chain = ( prompt | llm_for_overview )
     return overview_chain
+
 def generate_overview(document:str, overview_chain)-> str:
     overview = overview_chain.invoke({"text": document})
     return overview
+
 def overview_chain(document:list)-> str:
   combined_document = combined_chunk(document)
   overview_chain = create_overview()
@@ -451,7 +457,7 @@ def take_question_legislative():
         global chat_history_gnose, chat_history_Front, chat_history_RE, chat_history_UDD
         if chat_history_gnose is None:
             chat_history_gnose = []
-            
+
         if chat_history_Front is None:
             chat_history_Front = []
             
