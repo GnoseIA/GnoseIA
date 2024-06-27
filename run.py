@@ -323,7 +323,6 @@ def reference_for_retriever(results):          #fonction pour obtenir les réfé
   references.append(reference)
   return references
 
-
 #initialisation de toutes les histoires de discussion, à exécuter une fois au début de discussion ou quand l'utilisateur réinitialise la discussion
 chat_history_Front = []
 chat_history_UDD = []
@@ -346,6 +345,7 @@ def take_question_gnoseia():
         
         question_gnose = data['question']  # Récupérer la question depuis le JSON
         file = f"https://gnoseia-corpus-storage.s3.eu-west-3.amazonaws.com/{data['file']}"
+        
         # Load documents from the specified path
         documents = load_document(file)
         
@@ -374,14 +374,11 @@ def take_question_gnoseia():
             "references": ref_gnose
         }
 
-
         return jsonify(response), 200
     except Exception as e:
         # Logguer l'erreur pour le diagnostic
-        print(f"Erreur dans take_question_legislative: {str(e)}")
+        print(f"Erreur dans take_question_gnoseia: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
-
-
 
 @app.route('/api/corpus', methods=['POST'])
 def take_question_corpus():
@@ -392,11 +389,15 @@ def take_question_corpus():
         
         question = data['question']  # Récupérer la question depuis le JSON
 
+        # Initialiser chat_history_gnose s'il n'est pas déjà initialisé
+        global chat_history_gnose
+        if chat_history_gnose is None:
+            chat_history_gnose = []
+
         reponse_gnose, chat_history_gnose = Response_IA(question, chat_history_gnose, llm_for_gnose, compression_retriever_gnose)
         print(reponse_gnose)  # réponse de gnoseIA
 
         reference_gnose = compression_retriever_gnose.invoke(question)
-        print(reference_gnose)
         ref_gnose = reference_for_retriever(reference_gnose)
         print(ref_gnose)  # référence dans le corpus de gnoseia
 
@@ -410,9 +411,8 @@ def take_question_corpus():
         return jsonify(response), 200
     except Exception as e:
         # Logguer l'erreur pour le diagnostic
-        print(f"Erreur dans take_question_legislative: {str(e)}")
+        print(f"Erreur dans take_question_corpus: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
-
 
 @app.route('/api/legislative', methods=['POST'])
 def take_question_legislative():
@@ -423,7 +423,6 @@ def take_question_legislative():
         
         question = data['question']  # Récupérer la question depuis le JSON
 
-            
         reponse_Front, chat_history_Front = Response_IA(question, chat_history_Front, llm_for_response, compression_retriever)
         print(reponse_Front)  #réponse de Front populaire
 
@@ -445,7 +444,12 @@ def take_question_legislative():
         ref_RE = reference_for_retriever(reference_RE)
         print(ref_RE)      #réference dans le programme de Renaissance
 
-        answer_gnose, chat_history_Gnose = Response_IA(question, chat_history_Gnose, llm_for_gnose, compression_retriever_gnose)
+        # Initialiser chat_history_Gnose s'il n'est pas déjà initialisé
+        global chat_history_gnose
+        if chat_history_gnose is None:
+            chat_history_gnose = []
+
+        answer_gnose, chat_history_gnose = Response_IA(question, chat_history_gnose, llm_for_gnose, compression_retriever_gnose)
         print(answer_gnose)    #réponse de gnoseIA
 
         Reference_gnose = compression_retriever_gnose.invoke(question)
