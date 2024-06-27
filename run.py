@@ -380,14 +380,14 @@ def take_question_gnoseia():
         overview = overview_chain(docs_gnose)
         print(overview)    #aperçu des documents ajoutés
 
-        response = {
-            "question": question_gnose, 
-            "reponse": reponse_gnose, 
-            "overview": overview, 
-            "references": ref_gnose
-        }
+        # response = {
+        #     "question": question_gnose, 
+        #     "reponse": reponse_gnose, 
+        #     "overview": overview, 
+        #     "references": ref_gnose
+        # }
 
-        return jsonify(response), 200
+        return jsonify({"question": question_gnose, "reponse": reponse_gnose, "overview": overview}), 200
     except Exception as e:
         # Logguer l'erreur pour le diagnostic
         print(f"Erreur dans take_question_gnoseia: {str(e)}")
