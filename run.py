@@ -414,69 +414,69 @@ def take_question_corpus():
         return jsonify({'error': 'Internal server error'}), 500
 
 
-# @app.route('/api/legislative', methods=['POST'])
-# def take_question_legislative():
-#     try:
-#         data = request.json  # Récupérer le JSON envoyé dans la requête
-#         if not data or 'question' not in data:
-#             return jsonify({'error': 'Question not provided'}), 400
+@app.route('/api/legislative', methods=['POST'])
+def take_question_legislative():
+    try:
+        data = request.json  # Récupérer le JSON envoyé dans la requête
+        if not data or 'question' not in data:
+            return jsonify({'error': 'Question not provided'}), 400
         
-#         question = data['question']  # Récupérer la question depuis le JSON
+        question = data['question']  # Récupérer la question depuis le JSON
 
             
-#         reponse_Front, chat_history_Front = Response_IA(question, chat_history_Front, llm_for_response, compression_retriever)
-#         print(reponse_Front)  #réponse de Front populaire
+        reponse_Front, chat_history_Front = Response_IA(question, chat_history_Front, llm_for_response, compression_retriever)
+        print(reponse_Front)  #réponse de Front populaire
 
-#         reference_Front = compression_retriever.invoke(question)
-#         ref_Front = reference_for_retriever(reference_Front)
-#         print(ref_Front)    #réfeence dans le programme de Front populaire
+        reference_Front = compression_retriever.invoke(question)
+        ref_Front = reference_for_retriever(reference_Front)
+        print(ref_Front)    #réfeence dans le programme de Front populaire
 
-#         reponse_UDD, chat_history_UDD = Response_IA(question, chat_history_UDD, llm_for_response, compression_retriever_2)
-#         print(reponse_UDD)  #réponse de UDD
+        reponse_UDD, chat_history_UDD = Response_IA(question, chat_history_UDD, llm_for_response, compression_retriever_2)
+        print(reponse_UDD)  #réponse de UDD
 
-#         reference_UDD = compression_retriever_2.invoke(question)
-#         ref_UDD = reference_for_retriever(reference_UDD)
-#         print(ref_UDD)       #réference dans le programme UDD
+        reference_UDD = compression_retriever_2.invoke(question)
+        ref_UDD = reference_for_retriever(reference_UDD)
+        print(ref_UDD)       #réference dans le programme UDD
 
-#         reponse_RE, chat_history_RE = Response_IA(question, chat_history_RE, llm_for_response, compression_retriever_3)
-#         print(reponse_RE)   #réponse de Renaissance
+        reponse_RE, chat_history_RE = Response_IA(question, chat_history_RE, llm_for_response, compression_retriever_3)
+        print(reponse_RE)   #réponse de Renaissance
 
-#         reference_RE = compression_retriever_3.invoke(question)
-#         ref_RE = reference_for_retriever(reference_RE)
-#         print(ref_RE)      #réference dans le programme de Renaissance
+        reference_RE = compression_retriever_3.invoke(question)
+        ref_RE = reference_for_retriever(reference_RE)
+        print(ref_RE)      #réference dans le programme de Renaissance
 
-#         answer_gnose, chat_history_Gnose = Response_IA(question, chat_history_Gnose, llm_for_gnose, compression_retriever_gnose)
-#         print(answer_gnose)    #réponse de gnoseIA
+        answer_gnose, chat_history_Gnose = Response_IA(question, chat_history_Gnose, llm_for_gnose, compression_retriever_gnose)
+        print(answer_gnose)    #réponse de gnoseIA
 
-#         Reference_gnose = compression_retriever_gnose.invoke(question)
-#         Ref_gnose = reference_for_retriever(Reference_gnose)
-#         print(Ref_gnose)      #réference dans le corpus de gnoseIA
+        Reference_gnose = compression_retriever_gnose.invoke(question)
+        Ref_gnose = reference_for_retriever(Reference_gnose)
+        print(Ref_gnose)      #réference dans le corpus de gnoseIA
 
-#         # Préparer la réponse à renvoyer
-#         response = {
-#             'Front': {
-#                 'reponse': reponse_Front,
-#                 'references': ref_Front
-#             },
-#             'UDD': {
-#                 'reponse': reponse_UDD,
-#                 'references': ref_UDD
-#             },
-#             'Renaissance': {
-#                 'reponse': reponse_RE,
-#                 'references': ref_RE
-#             },
-#             'Gnoseia': {
-#                 'reponse': answer_gnose,
-#                 'references': Ref_gnose
-#             }
-#         }
+        # Préparer la réponse à renvoyer
+        response = {
+            'Front': {
+                'reponse': reponse_Front,
+                'references': ref_Front
+            },
+            'UDD': {
+                'reponse': reponse_UDD,
+                'references': ref_UDD
+            },
+            'Renaissance': {
+                'reponse': reponse_RE,
+                'references': ref_RE
+            },
+            'Gnoseia': {
+                'reponse': answer_gnose,
+                'references': Ref_gnose
+            }
+        }
 
-#         return jsonify(response), 200
-#     except Exception as e:
-#         # Logguer l'erreur pour le diagnostic
-#         print(f"Erreur dans take_question_legislative: {str(e)}")
-#         return jsonify({'error': 'Internal server error'}), 500
+        return jsonify(response), 200
+    except Exception as e:
+        # Logguer l'erreur pour le diagnostic
+        print(f"Erreur dans take_question_legislative: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
