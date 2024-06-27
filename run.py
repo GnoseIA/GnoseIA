@@ -322,7 +322,6 @@ def reference_for_retriever(results):          #fonction pour obtenir les réfé
     nombre_reference += 1
   references.append(reference)
   return references
-
 #initialisation de toutes les histoires de discussion, à exécuter une fois au début de discussion ou quand l'utilisateur réinitialise la discussion
 chat_history_Front = []
 chat_history_UDD = []
@@ -371,7 +370,7 @@ def take_question_gnoseia():
             "question": question_gnose, 
             "reponse": reponse_gnose, 
             "overview": overview, 
-            # "references": ref_gnose
+            "references": ref_gnose
         }
 
         return jsonify(response), 200
@@ -405,14 +404,14 @@ def take_question_corpus():
         response = {
             "question": question, 
             "reponse": reponse_gnose,
-            # "references": ref_gnose
+            "references": ref_gnose
         }
 
         return jsonify(response), 200
     except Exception as e:
         # Logguer l'erreur pour le diagnostic
         print(f"Erreur dans take_question_corpus: {str(e)}")
-        return jsonify({'error': 'Internal server error'}), 500
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/legislative', methods=['POST'])
 def take_question_legislative():
@@ -480,7 +479,7 @@ def take_question_legislative():
     except Exception as e:
         # Logguer l'erreur pour le diagnostic
         print(f"Erreur dans take_question_legislative: {str(e)}")
-        return jsonify({'error': 'Internal server error'}), 500
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
