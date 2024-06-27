@@ -322,6 +322,18 @@ def reference_for_retriever(results):          #fonction pour obtenir les réfé
     nombre_reference += 1
   references.append(reference)
   return references
+
+def reference_for_Darby(results):               #fonction pour obtenir les références de Darby
+  nombre_reference = 1
+  for result in results:
+    reference = nombre_reference + ") '" + result.page_content + "' \n"
+    split = result.metadata["source"]
+    splitted = split.split("/")
+    source = splitted[-1]
+    reference = reference + "Source: " + " '" + source,"' dans la page " + result.metadata["page"]+1 + "\n"
+    nombre_reference += 1
+    return reference
+  
 #initialisation de toutes les histoires de discussion, à exécuter une fois au début de discussion ou quand l'utilisateur réinitialise la discussion
 chat_history_Front = []
 chat_history_UDD = []
@@ -345,6 +357,8 @@ def take_question_gnoseia():
         question_gnose = data['question']  # Récupérer la question depuis le JSON
         file = f"https://gnoseia-corpus-storage.s3.eu-west-3.amazonaws.com/{data['file']}"
         
+        global chat_history_gnose
+
         # Load documents from the specified path
         documents = load_document(file)
         
@@ -397,7 +411,7 @@ def take_question_corpus():
         print(reponse_gnose)  # réponse de gnoseIA
 
         reference_gnose = compression_retriever_gnose.invoke(question)
-        ref_gnose = reference_for_retriever(reference_gnose)
+        ref_gnose = reference_for_Darby(reference_gnose)
         print(ref_gnose)  # référence dans le corpus de gnoseia
 
         # Store the response and references for the question
