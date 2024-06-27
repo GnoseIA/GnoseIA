@@ -380,14 +380,20 @@ def take_question_gnoseia():
         overview = overview_chain(docs_gnose)
         print(overview)    #aperçu des documents ajoutés
 
-        # response = {
-        #     "question": question_gnose, 
-        #     "reponse": reponse_gnose, 
-        #     "overview": overview, 
-        #     "references": ref_gnose
-        # }
+        # Préparer la réponse
+        response = {
+            "question": question_gnose,
+            "reponse": reponse_gnose,
+            "overview": overview,
+            "references": ref_gnose
+        }
 
-        return jsonify({"question": question_gnose, "reponse": reponse_gnose, "overview": overview}), 200
+        # Vérifier les types des valeurs
+        for key, value in response.items():
+            if not isinstance(value, (str, int, float, bool, type(None), list, dict)):
+                response[key] = str(value)  # Convertir en chaîne de caractères si nécessaire
+
+        return jsonify(response), 200
     except Exception as e:
         # Logguer l'erreur pour le diagnostic
         print(f"Erreur dans take_question_gnoseia: {str(e)}")
