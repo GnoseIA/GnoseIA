@@ -447,6 +447,20 @@ def take_question_legislative():
         
         question = data['question']  # Récupérer la question depuis le JSON
 
+        # Initialiser chat_history_Gnose s'il n'est pas déjà initialisé
+        global chat_history_gnose, chat_history_Front, chat_history_RE, chat_history_UDD
+        if chat_history_gnose is None:
+            chat_history_gnose = []
+            
+        if chat_history_Front is None:
+            chat_history_Front = []
+            
+        if chat_history_RE is None:
+            chat_history_RE = []
+
+        if chat_history_UDD is None:
+            chat_history_UDD = []
+
         reponse_Front, chat_history_Front = Response_IA(question, chat_history_Front, llm_for_response, compression_retriever)
         print(reponse_Front)  #réponse de Front populaire
 
@@ -468,10 +482,7 @@ def take_question_legislative():
         ref_RE = reference_for_retriever(reference_RE)
         print(ref_RE)      #réference dans le programme de Renaissance
 
-        # Initialiser chat_history_Gnose s'il n'est pas déjà initialisé
-        global chat_history_gnose
-        if chat_history_gnose is None:
-            chat_history_gnose = []
+        
 
         answer_gnose, chat_history_gnose = Response_IA(question, chat_history_gnose, llm_for_gnose, compression_retriever_gnose)
         print(answer_gnose)    #réponse de gnoseIA
