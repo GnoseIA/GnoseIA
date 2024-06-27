@@ -371,7 +371,7 @@ def take_question_gnoseia():
             "question": question_gnose, 
             "reponse": reponse_gnose, 
             "overview": overview, 
-            "references": ref_gnose
+            # "references": ref_gnose
         }
 
         return jsonify(response), 200
@@ -405,7 +405,7 @@ def take_question_corpus():
         response = {
             "question": question, 
             "reponse": reponse_gnose,
-            "references": ref_gnose
+            # "references": ref_gnose
         }
 
         return jsonify(response), 200
