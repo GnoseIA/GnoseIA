@@ -500,6 +500,16 @@ def take_question_legislative():
             }
         }
 
+        # Vérifier les types des valeurs
+        for key, value in response.items():
+            if isinstance(value, dict):
+                for sub_key, sub_value in value.items():
+                    if not isinstance(sub_value, (str, int, float, bool, type(None), list, dict)):
+                        value[sub_key] = str(sub_value)  # Convertir en chaîne de caractères si nécessaire
+            elif not isinstance(value, (str, int, float, bool, type(None), list, dict)):
+                response[key] = str(value)  # Convertir en chaîne de caractères si nécessaire
+
+
         return jsonify(response), 200
     except Exception as e:
         # Logguer l'erreur pour le diagnostic
