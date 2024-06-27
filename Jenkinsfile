@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     echo 'Pulling...' + scm.branches[0].name
-                    sh "docker build -t frontend:${env.TIMESTAMP_TAG} ."
+                    sh "docker build -t gnoseia:${env.TIMESTAMP_TAG} ."
                 }
             }
         }
@@ -27,7 +27,7 @@ pipeline {
         stage('run new version') {
             steps {
                 script {
-                        sh "sed -i 's|image: frontend|image: frontend:${env.TIMESTAMP_TAG}|' docker-compose.yml"
+                        sh "sed -i 's|image: gnoseia|image: gnoseia:${env.TIMESTAMP_TAG}|' docker-compose.yml"
                         sh 'docker compose up -d'
                 }
             }
