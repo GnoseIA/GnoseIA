@@ -95,7 +95,7 @@ def retrieval(database):
      search_type="similarity_score_threshold",
      search_kwargs={
         "k": 15,                      #nombre des résultats tirés
-        "score_threshold": 0.5        #seuil de la recherche, on prend les top 15 des phrases similaires à la question avec un seuil de 50%
+        "score_threshold": 0.3        #seuil de la recherche, on prend les top 15 des phrases similaires à la question avec un seuil de 50%
       }
   )
   return retriever
@@ -186,11 +186,12 @@ def init_model_gnose(model, tokenizer):
         def _call(self, prompt, stop=None, run_manager=None) -> str:
             model.to("cuda")
             # nouveau prompt de notre LLM
+            # If the context does not contain any relevant information for the question, or there is no given context,
+            # simply say that you do not know the answer, do not attempt to invent an answer. Do not try to answer an other question.
             prompt_template = """
             Use the following context elements to answer the question at the end.
-            If the context does not contain any relevant information for the question, or there is no given context,
-            simply say that you do not know the answer, do not attempt to invent an answer. Do not try to answer an other question.
-            Remember that you must respond in the language in which the question is asked."""
+            Remember that you must respond in the language in which the question is asked.
+            Answer like you were Darby"""
             combined_prompt = f"{prompt_template}\n{prompt}"
             self.streamer = TextIteratorStreamer(tokenizer, skip_prompt=True, timeout=5)
             inputs = tokenizer(combined_prompt, return_tensors="pt").to("cuda")
